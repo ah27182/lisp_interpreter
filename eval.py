@@ -33,13 +33,10 @@ def standard_env():
         '/': operator.truediv,
         'eq?': operator.is_,
         'nil': [],
-        # 'quote'
         'cons': lambda x,y: (x,y),
         'car': lambda x: x[0],
         'cdr': lambda x: x[1] if isinstance(x, Dotted_List) else x[1:],
         'atom?': lambda x: isinstance(x, Number) or isinstance(x, Symbol),
-        # 'define'
-        # 'lambda'
         }
 
     return Env(env.keys(), env.values())
