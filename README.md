@@ -1,4 +1,4 @@
-# lisp_interpreter
+# Lisp Interpreter
 A basic Lisp interpreter written in Python. This is my attempt at the problem posed here: http://pythonpracticeprojects.com/lisp.html
 
 ## Running
