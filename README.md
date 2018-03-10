@@ -1,5 +1,5 @@
 # lisp_interpreter
-A basic Lisp interpreter written in Python. This is my attempt at the problem posed here: [http://pythonpracticeprojects.com/lisp.html]
+A basic Lisp interpreter written in Python. This is my attempt at the problem posed here: http://pythonpracticeprojects.com/lisp.html
 
 ## Running
 Run either:
@@ -15,4 +15,4 @@ This interpreter was made to at the very least support a very basic version of L
 
 ## References
 Much of this code is based off/inspired by Peter Norvig's tutorial:
-[http://norvig.com/lispy.html]
+http://norvig.com/lispy.html
