@@ -25,13 +25,41 @@ class Procedure(object):
 
 # Creating a standard enviroment for Lisp, with all the normal and speical forms assigned
 def standard_env():
+    
+    def create_op(op):
+
+        def func(*args):
+
+            if len(args) < 2: 
+                raise TypeError("Need at least two arguments")
+
+            total = args[0]
+
+            for a in args[1:]:
+                total = op(total, a)
+            
+            return total
+        
+        return func
+    
+    def equals(*args):
+        if len(args) < 2: 
+            raise TypeError("Need at least two arguments")
+
+        check = args[0]
+
+        for a in args[1:]:
+            if check != a:
+                return False
+        
+        return True
 
     env = {
-        '+': operator.add,
-        '-': operator.sub,
-        '*': operator.mul,
-        '/': operator.truediv,
-        'eq?': operator.is_,
+        '+':create_op(operator.add),
+        '-': create_op(operator.sub),
+        '*': create_op(operator.mul),
+        '/': create_op(operator.truediv),
+        'eq?': equals,
         'nil': [],
         'cons': lambda x,y: (x,y),
         'car': lambda x: x[0],
@@ -40,7 +68,6 @@ def standard_env():
         }
 
     return Env(env.keys(), env.values())
-
 
 # Initalizing a global enviroment
 global_env = standard_env()
@@ -92,7 +119,7 @@ def eval(exp, env = global_env):
     else:
         procedure = eval(op,env)
 
-        if args[0] == "'":
+        if args != [] and args[0] == "'":
             return procedure(args[1:])
 
         args = [eval(arg, env) for arg in args]
