@@ -22,11 +22,7 @@ class Procedure(object):
     def __call__(self, *args): 
         return eval(self.body, Env(self.parms, args, self.env))
 
-
-# Creating a standard enviroment for Lisp, with all the normal and speical forms assigned
-def standard_env():
-    
-    def create_op(op):
+def create_op(op):
 
         def func(*args):
 
@@ -42,25 +38,46 @@ def standard_env():
         
         return func
     
-    def equals(*args):
-        if len(args) < 2: 
-            raise TypeError("Need at least two arguments")
+def equals(*args):
+    if len(args) < 2: 
+        raise TypeError("Need at least two arguments")
 
-        check = args[0]
+    check = args[0]
 
-        for a in args[1:]:
-            if check != a:
-                return False
-        
-        return True
+    for a in args[1:]:
+        if check != a:
+            return False
+    
+    return True
+
+def set_list(array, i, val):
+    array[i] = val
+    return array
+def index(a,i):
+    try: 
+        return a[i]
+    
+    except IndexError as e:
+        print(i,a)
+        raise e
+# Creating a standard enviroment for Lisp, with all the normal and speical forms assigned
+def standard_env():
 
     env = {
         '+':create_op(operator.add),
         '-': create_op(operator.sub),
         '*': create_op(operator.mul),
         '/': create_op(operator.truediv),
+        'floordiv': operator.floordiv,
+        'mod': operator.mod,
+        '<': lambda x,y: x < y,
+        '>': lambda x,y: x > y,
         'eq?': equals,
+        'or': lambda *args: any(args),
+        'and': lambda *args: all(args),
         'nil': [],
+        'index': index,
+        'set': set_list,
         'cons': lambda x,y: (x,y),
         'car': lambda x: x[0],
         'cdr': lambda x: x[1] if isinstance(x, Dotted_List) else x[1:],
@@ -114,6 +131,12 @@ def eval(exp, env = global_env):
     elif op == 'lambda':
         params, body = args
         return Procedure(params, body, env)
+    
+    elif op == 'batch':
+        for arg in args:
+            eval(arg)
+        
+        return 'nil'
 
     # Funtion Call
     else:
@@ -123,6 +146,7 @@ def eval(exp, env = global_env):
             return procedure(args[1:])
 
         args = [eval(arg, env) for arg in args]
+
         return procedure(*args)
 
 

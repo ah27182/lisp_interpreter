@@ -8,6 +8,7 @@ def repl(prompt='lisp> '):
         if val != None: 
             
             print(schemestr(val))
+            # print(val)
 
 # Convert experssion into normal Lisp formats
 def schemestr(exp):
